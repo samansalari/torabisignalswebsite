@@ -6,7 +6,9 @@ installCmd = "npm install --legacy-peer-deps"
 buildCmd = "npm run build"
 
 [deploy]
-startCommand = "npm start"
+startCommand = "next start -H 0.0.0.0 -p ${PORT:-3000}"
 healthcheckPath = "/"
 healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
 
