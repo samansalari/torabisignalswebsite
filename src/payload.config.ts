@@ -24,13 +24,13 @@ export default buildConfig({
   collections: [Pages, Media, Users],
   globals: [Header, Footer],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'default-secret-change-in-production',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      connectionString: process.env.DATABASE_URI || 'postgresql://localhost:5432/payload',
     },
   }),
   sharp,

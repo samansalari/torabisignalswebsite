@@ -1,5 +1,14 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 
+// Helper to safely extract hostname from URL
+const getHostname = (url) => {
+    try {
+        return url ? new URL(url).hostname : 'localhost';
+    } catch {
+        return 'localhost';
+    }
+};
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
@@ -13,7 +22,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: process.env.NEXT_PUBLIC_SERVER_URL ? new URL(process.env.NEXT_PUBLIC_SERVER_URL).hostname : '',
+                hostname: getHostname(process.env.NEXT_PUBLIC_SERVER_URL),
             },
         ],
     },
