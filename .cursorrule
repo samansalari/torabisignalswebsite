@@ -1,0 +1,389 @@
+# Payload CMS Landing Page Development Rules
+
+You are an expert in Payload CMS 3.0, Next.js 14+, TypeScript, React, and Tailwind CSS. You specialize in building dynamic, block-based landing pages with a code-first headless CMS approach.
+
+## Project Context
+
+This is a Payload CMS 3.0 project integrated with Next.js for building flexible, content-managed landing pages. The project uses:
+- Payload CMS 3.0 (Next.js native)
+- Next.js 14+ with App Router
+- TypeScript (strict mode)
+- Tailwind CSS for styling
+- Lexical rich text editor
+- PostgreSQL or MongoDB for database
+
+## Code Style & Conventions
+
+### TypeScript
+- Use strict TypeScript with no `any` types
+- Prefer interfaces over types for object shapes
+- Use Payload's generated types from `@/payload-types`
+- Export types explicitly when needed across modules
+
+### File Naming & Structure
+- Use kebab-case for file and folder names
+- Collections: `src/collections/[CollectionName].ts`
+- Blocks: `src/blocks/[BlockName]/config.ts` and `src/blocks/[BlockName]/Component.tsx`
+- Globals: `src/globals/[GlobalName].ts`
+- Components: `src/components/[ComponentName]/index.tsx`
+
+### Imports
+- Use absolute imports with `@/` prefix
+- Group imports: external packages, payload types, components, utilities
+- Import types using `import type` when only types are needed
+
+## Payload CMS Patterns
+
+### Collection Structure
+```typescript
+import type { CollectionConfig } from 'payload'
+
+export const Pages: CollectionConfig = {
+  slug: 'pages',
+  admin: {
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', 'updatedAt'],
+  },
+  access: {
+    read: () => true,
+  },
+  fields: [
+    // Fields here
+  ],
+}
+```
+
+### Block Definition Pattern
+```typescript
+import type { Block } from 'payload'
+
+export const HeroBlock: Block = {
+  slug: 'hero',
+  interfaceName: 'HeroBlock',
+  labels: {
+    singular: 'Hero',
+    plural: 'Heroes',
+  },
+  fields: [
+    // Block fields
+  ],
+}
+```
+
+### Global Structure
+```typescript
+import type { GlobalConfig } from 'payload'
+
+export const Header: GlobalConfig = {
+  slug: 'header',
+  access: {
+    read: () => true,
+  },
+  fields: [
+    // Global fields
+  ],
+}
+```
+
+## Landing Page Blocks
+
+Always create these essential blocks for landing pages:
+
+### Required Blocks
+1. **Hero** - Main banner with headline, subheadline, CTA buttons, background media
+2. **Features** - Grid/list of feature cards with icons, titles, descriptions
+3. **CTA (Call-to-Action)** - Conversion-focused sections with buttons
+4. **Testimonials** - Customer quotes with attribution
+5. **Pricing** - Pricing tiers with feature comparison
+6. **FAQ** - Accordion-style questions and answers
+7. **Content** - Rich text content sections
+8. **Media** - Images, videos, galleries
+9. **Stats** - Key metrics and numbers
+10. **Form** - Contact/lead capture forms
+
+### Block Component Pattern
+```typescript
+import React from 'react'
+import type { HeroBlock as HeroBlockType } from '@/payload-types'
+import { Media } from '@/components/Media'
+import { CMSLink } from '@/components/Link'
+import RichText from '@/components/RichText'
+
+export const HeroBlock: React.FC<HeroBlockType> = (props) => {
+  const { heading, subheading, media, links } = props
+  
+  return (
+    <section className="relative py-24">
+      {/* Component JSX */}
+    </section>
+  )
+}
+```
+
+## Field Patterns
+
+### Rich Text Field
+```typescript
+{
+  name: 'content',
+  type: 'richText',
+  editor: lexicalEditor({
+    features: ({ rootFeatures }) => [
+      ...rootFeatures,
+      HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+    ],
+  }),
+}
+```
+
+### Link Array Field
+```typescript
+{
+  name: 'links',
+  type: 'array',
+  maxRows: 2,
+  fields: [
+    {
+      name: 'link',
+      type: 'link',
+      relationTo: ['pages'],
+    },
+  ],
+}
+```
+
+### Media Upload Field
+```typescript
+{
+  name: 'media',
+  type: 'upload',
+  relationTo: 'media',
+  required: true,
+}
+```
+
+### Select Field with Variants
+```typescript
+{
+  name: 'variant',
+  type: 'select',
+  defaultValue: 'default',
+  options: [
+    { label: 'Default', value: 'default' },
+    { label: 'Centered', value: 'centered' },
+    { label: 'Split', value: 'split' },
+  ],
+}
+```
+
+## Layout Builder Pattern
+
+### Pages Collection with Layout Builder
+```typescript
+{
+  name: 'layout',
+  type: 'blocks',
+  blocks: [
+    HeroBlock,
+    FeaturesBlock,
+    CTABlock,
+    TestimonialsBlock,
+    PricingBlock,
+    FAQBlock,
+    ContentBlock,
+    MediaBlock,
+  ],
+}
+```
+
+### Rendering Blocks on Frontend
+```typescript
+import { Fragment } from 'react'
+import { blockComponents } from '@/blocks/components'
+
+export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
+  return (
+    <Fragment>
+      {blocks?.map((block, index) => {
+        const Block = blockComponents[block.blockType]
+        if (!Block) return null
+        return <Block key={index} {...block} />
+      })}
+    </Fragment>
+  )
+}
+```
+
+## SEO & Metadata
+
+### SEO Fields Group
+```typescript
+{
+  name: 'meta',
+  type: 'group',
+  fields: [
+    { name: 'title', type: 'text' },
+    { name: 'description', type: 'textarea' },
+    { name: 'image', type: 'upload', relationTo: 'media' },
+  ],
+}
+```
+
+### Dynamic Metadata Generation
+```typescript
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const page = await getPageBySlug(params.slug)
+  return {
+    title: page?.meta?.title || page?.title,
+    description: page?.meta?.description,
+    openGraph: {
+      images: page?.meta?.image ? [{ url: page.meta.image.url }] : [],
+    },
+  }
+}
+```
+
+## Data Fetching
+
+### Using Local API (Recommended)
+```typescript
+import { getPayload } from 'payload'
+import config from '@payload-config'
+
+export async function getPageBySlug(slug: string) {
+  const payload = await getPayload({ config })
+  
+  const { docs } = await payload.find({
+    collection: 'pages',
+    where: { slug: { equals: slug } },
+    depth: 2,
+  })
+  
+  return docs[0] || null
+}
+```
+
+### Draft Preview Support
+```typescript
+import { draftMode } from 'next/headers'
+
+export async function getPageData(slug: string) {
+  const { isEnabled: isDraft } = await draftMode()
+  
+  const payload = await getPayload({ config })
+  const { docs } = await payload.find({
+    collection: 'pages',
+    where: { slug: { equals: slug } },
+    draft: isDraft,
+  })
+  
+  return docs[0]
+}
+```
+
+## Component Guidelines
+
+### Reusable Components
+- `<Media />` - Handles images and videos from Payload uploads
+- `<CMSLink />` - Renders internal/external links from link fields
+- `<RichText />` - Renders Lexical rich text content
+- `<Icon />` - Renders icons from icon picker field
+
+### Styling with Tailwind
+- Use Tailwind utility classes
+- Create component variants with `cn()` utility
+- Use CSS variables for theming
+- Maintain consistent spacing scale (py-16, py-24, py-32)
+
+### Responsive Design
+- Mobile-first approach
+- Use Tailwind breakpoints: sm, md, lg, xl, 2xl
+- Test all blocks at mobile, tablet, desktop sizes
+
+## Performance
+
+### Image Optimization
+- Use Next.js Image component via Media component
+- Configure Payload image sizes for responsive images
+- Use WebP format with fallbacks
+- Implement lazy loading
+
+### Caching & Revalidation
+```typescript
+export const revalidate = 60 // Revalidate every 60 seconds
+
+// Or use on-demand revalidation in hooks
+afterChange: [
+  async ({ doc }) => {
+    await revalidatePath(`/${doc.slug}`)
+  },
+],
+```
+
+## Error Handling
+
+- Use try-catch for data fetching
+- Implement proper error boundaries
+- Show meaningful error states
+- Log errors appropriately
+
+## Testing Checklist
+
+Before completing any block or feature:
+- [ ] TypeScript compiles without errors
+- [ ] Component renders in admin preview
+- [ ] Responsive across breakpoints
+- [ ] Accessible (keyboard nav, ARIA labels, contrast)
+- [ ] SEO metadata renders correctly
+- [ ] Images optimized and loading properly
+
+## Common Mistakes to Avoid
+
+1. Don't use `any` types - always use Payload's generated types
+2. Don't fetch data client-side when server components work
+3. Don't hardcode content that should be CMS-managed
+4. Don't skip the `interfaceName` in block definitions
+5. Don't forget to add blocks to the layout field's blocks array
+6. Don't use inline styles - use Tailwind classes
+7. Don't forget depth parameter when fetching relational data
+
+## File Organization
+
+```
+src/
+├── app/
+│   ├── (frontend)/
+│   │   ├── [slug]/page.tsx
+│   │   └── layout.tsx
+│   └── (payload)/
+│       └── admin/[[...segments]]/page.tsx
+├── blocks/
+│   ├── Hero/
+│   │   ├── config.ts
+│   │   └── Component.tsx
+│   ├── Features/
+│   └── ...
+├── collections/
+│   ├── Pages.ts
+│   ├── Media.ts
+│   └── Users.ts
+├── components/
+│   ├── Media/
+│   ├── Link/
+│   └── RichText/
+├── globals/
+│   ├── Header.ts
+│   └── Footer.ts
+└── payload.config.ts
+```
+
+## When Creating New Blocks
+
+1. Create `config.ts` with Block definition
+2. Create `Component.tsx` with React component
+3. Add block to `blockComponents` registry
+4. Add block to Pages collection layout field
+5. Generate types with `pnpm generate:types`
+6. Test in admin panel and frontend
