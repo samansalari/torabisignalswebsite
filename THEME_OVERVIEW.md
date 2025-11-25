@@ -9,50 +9,50 @@ A production-ready, fully-featured Payload CMS 3.0 theme designed for building m
 ### 📦 10 Pre-built Landing Page Blocks
 
 1. **Hero Block** - Eye-catching main banner
-   - 3 Variants: Default, Centered, Split
-   - Media support (images/videos)
-   - Multiple CTA buttons
-   - Configurable appearance
+    - 3 Variants: Default, Centered, Split
+    - Media support (images/videos)
+    - Multiple CTA buttons
+    - Configurable appearance
 
 2. **Features Block** - Showcase product features
-   - 2-4 column layouts
-   - Icon support (@untitledui/icons)
-   - Grid or list display
+    - 2-4 column layouts
+    - Icon support (@untitledui/icons)
+    - Grid or list display
 
 3. **CTA Block** - Call-to-action sections
-   - 3 Variants: Default, Centered, Banner
-   - Multiple button styles
-   - Background customization
+    - 3 Variants: Default, Centered, Banner
+    - Multiple button styles
+    - Background customization
 
 4. **Testimonials Block** - Customer reviews
-   - Grid, Carousel, or Single layout
-   - Star ratings
-   - Avatar images
-   - Author attribution
+    - Grid, Carousel, or Single layout
+    - Star ratings
+    - Avatar images
+    - Author attribution
 
 5. **Pricing Block** - Pricing tables
-   - Highlighted tier support
-   - Feature lists
-   - Custom CTAs per tier
+    - Highlighted tier support
+    - Feature lists
+    - Custom CTAs per tier
 
 6. **FAQ Block** - Accordion questions
-   - Interactive expand/collapse
-   - SEO-friendly structure
+    - Interactive expand/collapse
+    - SEO-friendly structure
 
 7. **Content Block** - Rich text content
-   - Lexical editor integration
-   - Configurable max-width
-   - Typography support
+    - Lexical editor integration
+    - Configurable max-width
+    - Typography support
 
 8. **Media Block** - Images and videos
-   - Multiple aspect ratios
-   - Captions
-   - Optimized loading
+    - Multiple aspect ratios
+    - Captions
+    - Optimized loading
 
 9. **Stats Block** - Key metrics
-   - 4-column layout
-   - Large number display
-   - Descriptions
+    - 4-column layout
+    - Large number display
+    - Descriptions
 
 10. **Form Block** - Lead capture
     - Dynamic field types
@@ -62,15 +62,18 @@ A production-ready, fully-featured Payload CMS 3.0 theme designed for building m
 ### 🏗️ Architecture
 
 #### Collections
+
 - **Pages**: Dynamic page builder with layout blocks
 - **Media**: Image/video uploads with optimization
 - **Users**: Authentication and admin access
 
 #### Globals
+
 - **Header**: Site-wide navigation and branding
 - **Footer**: Multi-column footer with links
 
 #### Components
+
 - **Media**: Next.js Image optimization wrapper
 - **CMSLink**: Smart link component (internal/external)
 - **RichText**: Lexical content renderer
@@ -81,11 +84,13 @@ A production-ready, fully-featured Payload CMS 3.0 theme designed for building m
 ### 🎨 Design System
 
 #### Typography
+
 - Display headings (XS to 2XL)
 - Body text variants
 - Custom Tailwind classes
 
 #### Colors
+
 - Primary: Blue-600
 - Secondary: Gray-600
 - Success: Green-500
@@ -94,6 +99,7 @@ A production-ready, fully-featured Payload CMS 3.0 theme designed for building m
 - Dark mode support
 
 #### Components
+
 - Buttons: Primary, Secondary, Outline
 - Forms: Input, Textarea, Select
 - Cards: Shadow variants
@@ -103,13 +109,13 @@ A production-ready, fully-featured Payload CMS 3.0 theme designed for building m
 
 ```json
 {
-  "CMS": "Payload CMS 3.8.1",
-  "Framework": "Next.js 15",
-  "Language": "TypeScript 5.9",
-  "Styling": "Tailwind CSS 4.1.11",
-  "Database": "PostgreSQL (or MongoDB)",
-  "Editor": "Lexical",
-  "Image Optimization": "Next.js Image + Sharp"
+    "CMS": "Payload CMS 3.8.1",
+    "Framework": "Next.js 15",
+    "Language": "TypeScript 5.9",
+    "Styling": "Tailwind CSS 4.1.11",
+    "Database": "PostgreSQL (or MongoDB)",
+    "Editor": "Lexical",
+    "Image Optimization": "Next.js Image + Sharp"
 }
 ```
 
@@ -195,34 +201,39 @@ cardiocareanalyser/
 ### 🚀 Getting Started
 
 1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+
+    ```bash
+    npm install
+    ```
 
 2. **Configure environment:**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials
-   ```
+
+    ```bash
+    cp .env.example .env
+    # Edit .env with your database credentials
+    ```
 
 3. **Run migrations:**
-   ```bash
-   npm run payload migrate
-   ```
+
+    ```bash
+    npm run payload migrate
+    ```
 
 4. **Start development:**
-   ```bash
-   npm run dev
-   ```
+
+    ```bash
+    npm run dev
+    ```
 
 5. **Access admin panel:**
-   ```
-   http://localhost:3000/admin
-   ```
+    ```
+    http://localhost:3000/admin
+    ```
 
 ### 📝 Content Management
 
 #### Creating Pages
+
 1. Go to Admin → Collections → Pages
 2. Click "Create New"
 3. Add title and slug
@@ -232,12 +243,14 @@ cardiocareanalyser/
 7. Publish
 
 #### Managing Globals
+
 - **Header**: Logo, navigation items
 - **Footer**: Logo, columns, copyright
 
 ### 🎨 Customization
 
 #### Adding New Blocks
+
 1. Create block config in `src/blocks/[BlockName]/config.ts`
 2. Create component in `src/blocks/[BlockName]/Component.tsx`
 3. Register in `src/blocks/index.ts`
@@ -245,11 +258,13 @@ cardiocareanalyser/
 5. Generate types: `npm run generate:types`
 
 #### Styling
+
 - Edit Tailwind config: `tailwind.config.ts`
 - Customize block styles in component files
 - Add global styles in `src/styles/`
 
 #### Collections
+
 - Create new collections in `src/collections/`
 - Update `payload.config.ts`
 - Generate types
@@ -275,11 +290,13 @@ cardiocareanalyser/
 ### 🌐 Deployment
 
 #### Vercel (Recommended)
+
 ```bash
 vercel --prod
 ```
 
 #### Other Platforms
+
 - Set environment variables
 - Build: `npm run build`
 - Start: `npm start`
@@ -306,7 +323,4 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Built with ❤️ using Payload CMS**
-
-
-
+**Built with ❤️ using Payload CMS By Saman**
