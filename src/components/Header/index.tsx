@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getGlobal } from '@/lib/data'
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import type { Header as HeaderType } from '@/payload-types'
 
 export const Header: React.FC = async () => {
   const header = await getGlobal('header')
@@ -20,7 +21,7 @@ export const Header: React.FC = async () => {
 
           {header?.navItems && header.navItems.length > 0 && (
             <nav className="hidden md:flex items-center gap-6">
-              {header.navItems.map((item, index) => {
+              {header.navItems.map((item: NonNullable<HeaderType['navItems']>[number], index: number) => {
                 const href =
                   item.link.type === 'reference' &&
                   typeof item.link.reference?.value === 'object'

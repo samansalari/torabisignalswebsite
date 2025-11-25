@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { getPageBySlug } from '@/lib/data'
 import { RenderBlocks } from '@/components/RenderBlocks'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: 'CardioCare Analyser',
   description: 'Advanced cardiac care analysis and monitoring',

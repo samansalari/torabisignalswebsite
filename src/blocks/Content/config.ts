@@ -5,7 +5,7 @@ import {
   LinkFeature,
   BoldFeature,
   ItalicFeature,
-  UnderlineFeatureClient,
+  UnderlineFeature,
   OrderedListFeature,
   UnorderedListFeature,
 } from '@payloadcms/richtext-lexical'
@@ -26,7 +26,7 @@ export const ContentBlock: Block = {
         features: () => [
           BoldFeature(),
           ItalicFeature(),
-          UnderlineFeatureClient(),
+          UnderlineFeature(),
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
           LinkFeature({}),
           OrderedListFeature(),

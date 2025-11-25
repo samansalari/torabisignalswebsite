@@ -19,7 +19,7 @@ export async function getPageBySlug(slug: string): Promise<Page | null> {
       draft: isDraft,
     })
 
-    return docs[0] || null
+    return (docs[0] as Page) || null
   } catch (error) {
     console.error('Error fetching page:', error)
     return null
@@ -36,7 +36,7 @@ export async function getAllPages(): Promise<Page[]> {
       limit: 100,
     })
 
-    return docs
+    return docs as Page[]
   } catch (error) {
     console.error('Error fetching pages:', error)
     return []

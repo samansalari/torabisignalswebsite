@@ -1,19 +1,15 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getPageBySlug, getAllPages } from '@/lib/data'
+import { getPageBySlug } from '@/lib/data'
 import { RenderBlocks } from '@/components/RenderBlocks'
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 type Props = {
   params: Promise<{
     slug: string
   }>
-}
-
-export async function generateStaticParams() {
-  const pages = await getAllPages()
-  return pages.map((page) => ({
-    slug: page.slug || '',
-  }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

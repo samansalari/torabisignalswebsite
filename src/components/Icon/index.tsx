@@ -18,9 +18,8 @@ export const Icon: React.FC<IconProps> = ({ name, className }) => {
   const IconComponent = Icons[iconName] as React.ComponentType<any>
 
   if (!IconComponent) {
-    // Fallback to a default icon
-    const DefaultIcon = Icons.HeartIcon as React.ComponentType<any>
-    return <DefaultIcon className={className} />
+    // Return null if icon not found
+    return null
   }
 
   return <IconComponent className={className} />

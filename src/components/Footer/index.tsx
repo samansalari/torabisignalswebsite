@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { getGlobal } from '@/lib/data'
 import { Media } from '@/components/Media'
+import type { Footer as FooterType } from '@/payload-types'
 
 export const Footer: React.FC = async () => {
   const footer = await getGlobal('footer')
@@ -20,14 +21,14 @@ export const Footer: React.FC = async () => {
           </div>
 
           {footer?.columns &&
-            footer.columns.map((column, index) => (
+            footer.columns.map((column: NonNullable<FooterType['columns']>[number], index: number) => (
               <div key={index}>
                 {column.heading && (
                   <h3 className="font-semibold text-lg mb-4">{column.heading}</h3>
                 )}
                 {column.links && column.links.length > 0 && (
                   <ul className="space-y-2">
-                    {column.links.map((item, i) => {
+                    {column.links.map((item: NonNullable<typeof column.links>[number], i: number) => {
                       const href =
                         item.link.type === 'reference' &&
                         typeof item.link.reference?.value === 'object'
